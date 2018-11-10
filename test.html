@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <script src="/node_modules/jquery/dist/jquery.js"></script>
+        <script src="/dom-behavior.js"></script>
+        <script>
+        setTimeout(() => {
+            var div = document.createElement('div');
+            div.innerHTML = `
+                <span click-me="hoi">click me</span>
+                <span click-me="hoi">click me</span>
+                <span click-me="hoi">click me</span>
+                <span click-me="hoi">click me</span>
+                <span click-me="hoi">click me</span>  
+            `;
+
+            document.body.append(div);
+        },500);
+
+        behavior('create', '[click-me]', function (args) {
+            var timer = null;
+            var count = 0;
+            this.addEventListener('click', () => {
+                if (timer) {
+                    clearInterval(timer)
+                    timer = null
+                    return;
+                }
+
+                timer = setInterval(() => {
+                    count++;
+                    this.innerHTML = 'count = ' + count;
+                }, 500)
+            })
+            console.log(args);
+
+        })
+
+        function openPopup(content = '[empty]') {
+            var div = document.createElement('div');
+
+            div.innerHTML = `
+            <div style="border:3px solid red;">
+                <div close-popup>&times;</div>
+                ${content}
+            </div>
+            `
+
+            document.body.append(div);
+        }
+        /* 
+        behavior('click', '[close-popup]', function (event) {
+            
+        })
+        */
+
+        behavior('[close-popup]', function () {
+            var count = 0;
+            return {
+                create() {
+                    count++;
+                    this.innerHTML += ' ' + count;
+                },
+                click() {
+                    console.log(this);
+                    this.parentNode.parentNode.removeChild(this.parentNode);
+                }
+            }
+        })
+        behavior('.content', function () {
+            var count = 0;
+            return {
+                create() {
+                    count++;
+                    this.innerHTML += ' ' + count;
+                },
+            }
+        })
+        </script>
+    </head>
+
+    <body>
+        Testie testie
+
+
+        <button onclick="openPopup('<div class=\'content\'>Content!!</div>')">
+            Open popup
+        </button>
+        
+    </body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "dom-behavior",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Joshua Angnoe <joshua@fluxfx.nl>",
+  "license": "BSD-2-Clause",
+  "private": false
+}
